@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /*hide scrollbar*/
+      }
+		</style>
+
+    <canvas id="bg"></canvas>
+	</head>
+	<body scrollTop=0>
+		<script src="three.js"></script>
+		<script>
+			const scene = new THREE.Scene();
+			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+			const renderer = new THREE.WebGLRenderer({canvas: document.getElementById("bg")});
+			renderer.setSize( window.innerWidth, window.innerHeight );
+      renderer.setPixelRatio( window.devicePixelRatio );
+
+			const geometry = new THREE.BoxGeometry();
+      const torusGeo = new THREE.TorusGeometry( 10, 3, 16, 100 );
+			const material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true } );
+			const cube = new THREE.Mesh( geometry, material );
+      const torus = new THREE.Mesh( torusGeo, material );
+      scene.add( torus );
+			scene.add( cube );
+
+			camera.position.z = 25;
+
+      var fpMouse = false;
+      function mouseModeToggle(){
+        if (!fpMouse) {
+          document.getElementById("bg").requestPointerLock();
+          fpMouse = true;
+        }else{
+          document.exitPointerLock();
+          fpMouse = false;
+        }
+      }
+
+			const animate = function () {
+				requestAnimationFrame( animate );
+
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+
+        torus.rotation.x += 0.01;
+				torus.rotation.y += 0.01;
+
+				renderer.render( scene, camera );
+			};
+
+			animate();
+
+      window.addEventListener("mousedown", function (e) {
+        if(e.button == 0) { //0 = left click
+          //TCPChan.send("mouseDown");
+        }else if (e.button == 2) { //2 = right click
+          //TCPChan.send("rightMouseDown");
+        }else if (e.button == 1) {
+          mouseModeToggle();
+        }
+      });
+
+      //Stop Right Click Bringing Up Menu
+      window.addEventListener("contextmenu", function(event){
+        event.preventDefault();   //stops right click bringing up a menu
+        //console.log("hi")
+      });
+		</script>
+	</body>
+</html>
