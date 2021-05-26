@@ -18,6 +18,7 @@
 		<script>
 			const scene = new THREE.Scene();
 			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+      //const controls = new THREE.OrbitControls( camera, document.getElementById("bg") );
 
 			const renderer = new THREE.WebGLRenderer({canvas: document.getElementById("bg")});
 			renderer.setSize( window.innerWidth, window.innerHeight );
@@ -25,11 +26,28 @@
 
 			const geometry = new THREE.BoxGeometry();
       const torusGeo = new THREE.TorusGeometry( 10, 3, 16, 100 );
-			const material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true } );
-			const cube = new THREE.Mesh( geometry, material );
-      const torus = new THREE.Mesh( torusGeo, material );
+			const basicMaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true } );
+      const stdMaterial = new THREE.MeshStandardMaterial( { color: 0x00ff00 } ); //reacts to light
+			const cube = new THREE.Mesh( geometry, basicMaterial );
+      const torus = new THREE.Mesh( torusGeo, stdMaterial );
       scene.add( torus );
 			scene.add( cube );
+
+      const pointLight = new THREE.PointLight(0xffffff);
+      pointLight.position.set(15,5,5);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff);
+      scene.add( pointLight, ambientLight );
+
+      //Shows Position of point light
+      const lightHelper = new THREE.PointLightHelper(pointLight);
+      //Shows 2D grid
+      const gridHelper = new THREE.GridHelper(200, 50);
+      scene.add(lightHelper, gridHelper);
+
+
+
+
 
 			camera.position.z = 25;
 
@@ -66,6 +84,11 @@
         }else if (e.button == 1) {
           mouseModeToggle();
         }
+      });
+
+      window.addEventListener("mousemove", function(e){
+      //  camera.rotation.x -= e.movementX/100;
+      //  camera.rotation.z += e.movementY/100;
       });
 
       //Stop Right Click Bringing Up Menu
