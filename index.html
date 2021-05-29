@@ -15,7 +15,9 @@
 	</head>
 	<body scrollTop=0>
 		<script src="three.js"></script>
-		<script>
+		<script type="module">
+			import { FirstPersonControls } from './three.js-dev/examples/jsm/controls/FirstPersonControls.js';
+
 			const scene = new THREE.Scene();
 			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
       //const controls = new THREE.OrbitControls( camera, document.getElementById("bg") );
@@ -45,9 +47,8 @@
       const gridHelper = new THREE.GridHelper(200, 50);
       scene.add(lightHelper, gridHelper);
 
-
-
-
+			const controls = new FirstPersonControls(camera, renderer.domElement);
+			controls.lookVertical = false;
 
 			camera.position.z = 25;
 
@@ -71,6 +72,8 @@
         torus.rotation.x += 0.01;
 				torus.rotation.y += 0.01;
 
+				controls.update();
+
 				renderer.render( scene, camera );
 			};
 
@@ -85,24 +88,24 @@
           mouseModeToggle();
         }
       });
-
+/*
       window.addEventListener("mousemove", function(e){
         camera.rotation.y -= e.movementX/200;
-        if (camera.rotation.y < 3.14){
-          camera.rotation.y = 3.14;
-          console.log(camera.rotation.y)
-        }else if (camera.rotation.y < 0){
-          camera.rotation.y = 0;
-          console.log(camera.rotation.y)
-        }
+        //if (camera.rotation.y < 3.14){
+        //  camera.rotation.y = 3.14;
+        //  console.log(camera.rotation.y)
+        //}else if (camera.rotation.y < 0){
+        //  camera.rotation.y = 0;
+        //  console.log(camera.rotation.y)
+        //}
         camera.rotation.x -= e.movementY/200;
-        if (camera.rotation.x < 3.14){
-          camera.rotation.x = 3.14;
-          console.log(camera.rotation.x)
-        }else if (camera.rotation.x < 0){
-          camera.rotation.x = 0;
-          console.log(camera.rotation.x)
-        }
+        //if (camera.rotation.x < 3.14){
+        //  camera.rotation.x = 3.14;
+        //  console.log(camera.rotation.x)
+        //}else if (camera.rotation.x < 0){
+        //  camera.rotation.x = 0;
+        //  console.log(camera.rotation.x)
+        //}
       });
 
       window.addEventListener("keydown", function(e){
@@ -122,7 +125,7 @@
         }
 
       });
-
+*/
       //Stop Right Click Bringing Up Menu
       window.addEventListener("contextmenu", function(event){
         event.preventDefault();   //stops right click bringing up a menu
