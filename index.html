@@ -48,7 +48,10 @@
       scene.add(lightHelper, gridHelper);
 
 			const controls = new FirstPersonControls(camera, renderer.domElement);
-			controls.lookVertical = false;
+			//controls.lookVertical = false;
+			controls.lookSpeed = 1;
+			controls.movementSpeed = 5;
+			controls.activeLook = false;
 
 			camera.position.z = 25;
 
@@ -63,6 +66,8 @@
         }
       }
 
+			var clock = new THREE.Clock();
+
 			const animate = function () {
 				requestAnimationFrame( animate );
 
@@ -72,7 +77,7 @@
         torus.rotation.x += 0.01;
 				torus.rotation.y += 0.01;
 
-				controls.update();
+				controls.update(clock.getDelta());
 
 				renderer.render( scene, camera );
 			};
